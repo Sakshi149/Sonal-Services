@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonal Services - Employee & HR Portal</title>
+  <meta name="description" content="Official Employee and HR Management Portal for Sonal Services. Secure document access, salary slips, official letters, and employee records.">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       AUTH SCREEN (LOGIN & PASSWORD RECOVERY)
+       ========================================================================= -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-wrapper">
+      <!-- Left side banner -->
+      <div class="auth-hero">
+        <div class="hero-brand">
+          <div class="hero-logo-box">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div>
+            <h2>Sonal Services</h2>
+            <p>Enterprise Human Resource Suite</p>
+          </div>
+        </div>
+        
+        <div class="hero-content">
+          <h3>Empowering Talent, Powering Excellence</h3>
+          <p>Access your monthly salary slips, appointment letters, verified certificates, and company announcements with military-grade privacy and real-time verification.</p>
+          
+          <div class="hero-features">
+            <div class="feature-item">
+              <div class="feat-icon"><i class="fa-solid fa-file-shield"></i></div>
+              <div>
+                <strong>Encrypted Document Vault</strong>
+                <span>Aadhaar, PAN & Official Letters securely stored</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feat-icon"><i class="fa-solid fa-receipt"></i></div>
+              <div>
+                <strong>Instant Salary Slips</strong>
+                <span>1-Click View & Printable PDF with TDS breakdown</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feat-icon"><i class="fa-solid fa-stamp"></i></div>
+              <div>
+                <strong>HR Letters & Increments</strong>
+                <span>Digitally signed official corporate documents</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-footer">
+          <span>&copy; 2026 Sonal Services Pvt. Ltd. All rights reserved.</span>
+          <span>ISO 27001 Certified HRMS</span>
+        </div>
+      </div>
+
+      <!-- Right side form -->
+      <div class="auth-form-card">
+        <div class="auth-header">
+          <div class="mobile-logo-header">
+            <div class="logo-box-sm">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <h4>Sonal Services</h4>
+          </div>
+          <h2>Welcome Back</h2>
+          <p>Please enter your authorized corporate credentials</p>
+        </div>
+
+        <!-- Role Quick Switcher Pills for Testing Convenience -->
+        <div class="demo-role-selector">
+          <span class="role-hint"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Demo Access:</span>
+          <div class="demo-btn-group">
+            <button type="button" class="btn-demo-pill active" id="demoEmpBtn" onclick="window.auth.fillCredentials('employee')">
+              <i class="fa-solid fa-user"></i> Employee Login
+            </button>
+            <button type="button" class="btn-demo-pill" id="demoAdminBtn" onclick="window.auth.fillCredentials('admin')">
+              <i class="fa-solid fa-user-shield"></i> Admin/HR Login
+            </button>
+          </div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="window.auth.handleLogin(event)" novalidate>
+          <div class="form-group">
+            <label for="loginIdentifier">Employee ID or Corporate Email <span class="req">*</span></label>
+            <div class="input-with-icon">
+              <i class="fa-regular fa-envelope"></i>
+              <input type="text" id="loginIdentifier" placeholder="EMP-1042 or rahul.sharma@sonalservices.com" required autocomplete="username">
+            </div>
+            <span class="field-error" id="loginIdentifierError"></span>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="loginPassword">Password <span class="req">*</span></label>
+              <a href="#" class="forgot-link" onclick="window.auth.showForgotModal(event)">Forgot Password?</a>
+            </div>
+            <div class="input-with-icon">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="loginPassword" placeholder="Enter your portal password" required autocomplete="current-password">
+              <button type="button" class="btn-toggle-pwd" onclick="window.auth.togglePassword('loginPassword', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+            <span class="field-error" id="loginPasswordError"></span>
+          </div>
+
+          <div class="form-row-remember">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="rememberMe" checked>
+              <span class="checkmark"></span>
+              Remember this device for 30 days
+            </label>
+            <span class="role-badge-preview" id="previewRoleBadge"><i class="fa-solid fa-shield-halved"></i> Role: Employee</span>
+          </div>
+
+          <button type="submit" class="btn-primary btn-block btn-login" id="loginSubmitBtn">
+            <span class="btn-text">Sign In to Portal</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="auth-security-notice">
+          <i class="fa-solid fa-lock text-success"></i>
+          <span>Secure 256-bit TLS Connection. Unauthorized access is strictly logged & audited.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MAIN APP LAYOUT (PORTAL)
+       ========================================================================= -->
+  <div id="appLayout" class="app-layout hidden">
+    
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-container">
+          <div class="brand-logo-icon">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Sonal Services</span>
+            <span class="brand-subtitle" id="sidebarRoleSubtitle">Employee Portal</span>
+          </div>
+        </div>
+        <button type="button" class="btn-sidebar-close" id="sidebarCloseBtn" onclick="window.ui.toggleSidebar()" aria-label="Close Sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- User Mini Card inside sidebar -->
+      <div class="sidebar-user-card">
+        <div class="sidebar-avatar-wrap">
+          <img src="" alt="Avatar" id="sidebarUserAvatar" class="sidebar-avatar">
+          <span class="online-dot"></span>
+        </div>
+        <div class="sidebar-user-info">
+          <h4 id="sidebarUserName">Employee Name</h4>
+          <span id="sidebarUserDesignation">Designation</span>
+          <span class="badge-role" id="sidebarUserRoleBadge">Employee</span>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <!-- EMPLOYEE NAVIGATION -->
+        <ul id="employeeNav" class="nav-list">
+          <li class="nav-heading">MAIN NAVIGATION</li>
+          <li>
+            <a href="#dashboard" class="nav-link active" data-view="employee-dashboard" onclick="window.ui.navigate('employee-dashboard', event)">
+              <i class="fa-solid fa-chart-pie"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#profile" class="nav-link" data-view="employee-profile" onclick="window.ui.navigate('employee-profile', event)">
+              <i class="fa-solid fa-id-card"></i>
+              <span>My Profile</span>
+            </a>
+          </li>
+          <li>
+            <a href="#documents" class="nav-link" data-view="employee-documents" onclick="window.ui.navigate('employee-documents', event)">
+              <i class="fa-solid fa-folder-open"></i>
+              <span>Personal Documents</span>
+              <span class="badge-nav" id="empPendingDocsNavBadge">0</span>
+            </a>
+          </li>
+          <li>
+            <a href="#appointment" class="nav-link" data-view="employee-appointment" onclick="window.ui.navigate('employee-appointment', event)">
+              <i class="fa-solid fa-file-contract"></i>
+              <span>Appointment Letter</span>
+            </a>
+          </li>
+          <li>
+            <a href="#salary-slips" class="nav-link" data-view="employee-salary" onclick="window.ui.navigate('employee-salary', event)">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+              <span>Salary Slips</span>
+            </a>
+          </li>
+          <li>
+            <a href="#increment-letter" class="nav-link" data-view="employee-increment" onclick="window.ui.navigate('employee-increment', event)">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+              <span>Increment Letter</span>
+            </a>
+          </li>
+          <li>
+            <a href="#experience-letter" class="nav-link" data-view="employee-experience" onclick="window.ui.navigate('employee-experience', event)">
+              <i class="fa-solid fa-award"></i>
+              <span>Experience Letter</span>
+            </a>
+          </li>
+          <li class="nav-heading">COMMUNICATION</li>
+          <li>
+            <a href="#announcements" class="nav-link" data-view="announcements" onclick="window.ui.navigate('announcements', event)">
+              <i class="fa-solid fa-bullhorn"></i>
+              <span>Announcements</span>
+              <span class="badge-nav bg-accent">New</span>
+            </a>
+          </li>
+          <li>
+            <a href="#settings" class="nav-link" data-view="settings" onclick="window.ui.navigate('settings', event)">
+              <i class="fa-solid fa-sliders"></i>
+              <span>Portal Settings</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- ADMIN/HR NAVIGATION -->
+        <ul id="adminNav" class="nav-list hidden">
+          <li class="nav-heading">HR ADMINISTRATION</li>
+          <li>
+            <a href="#admin-dashboard" class="nav-link active" data-view="admin-dashboard" onclick="window.ui.navigate('admin-dashboard', event)">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>HR Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-employees" class="nav-link" data-view="admin-employees" onclick="window.ui.navigate('admin-employees', event)">
+              <i class="fa-solid fa-users-gear"></i>
+              <span>Employee Directory</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-verification" class="nav-link" data-view="admin-verification" onclick="window.ui.navigate('admin-verification', event)">
+              <i class="fa-solid fa-clipboard-check"></i>
+              <span>Document Verification</span>
+              <span class="badge-nav bg-danger" id="adminPendingDocsBadge">0</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-appointment" class="nav-link" data-view="admin-appointment" onclick="window.ui.navigate('admin-appointment', event)">
+              <i class="fa-solid fa-file-signature"></i>
+              <span>Appointment Letters</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-salary" class="nav-link" data-view="admin-salary" onclick="window.ui.navigate('admin-salary', event)">
+              <i class="fa-solid fa-money-bill-transfer"></i>
+              <span>Salary Management</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-increment" class="nav-link" data-view="admin-increment" onclick="window.ui.navigate('admin-increment', event)">
+              <i class="fa-solid fa-money-bill-trend-up"></i>
+              <span>Issue Increment</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-experience" class="nav-link" data-view="admin-experience" onclick="window.ui.navigate('admin-experience', event)">
+              <i class="fa-solid fa-certificate"></i>
+              <span>Experience Letters</span>
+            </a>
+          </li>
+          <li class="nav-heading">ENTERPRISE</li>
+          <li>
+            <a href="#announcements" class="nav-link" data-view="announcements" onclick="window.ui.navigate('announcements', event)">
+              <i class="fa-solid fa-bullhorn"></i>
+              <span>HR Announcements</span>
+            </a>
+          </li>
+          <li>
+            <a href="#admin-reports" class="nav-link" data-view="admin-reports" onclick="window.ui.navigate('admin-reports', event)">
+              <i class="fa-solid fa-file-waveform"></i>
+              <span>HR Reports & Audit</span>
+            </a>
+          </li>
+          <li>
+            <a href="#settings" class="nav-link" data-view="settings" onclick="window.ui.navigate('settings', event)">
+              <i class="fa-solid fa-sliders"></i>
+              <span>System Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button type="button" class="btn-logout" onclick="window.auth.handleLogout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- SIDEBAR OVERLAY FOR MOBILE -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="window.ui.toggleSidebar()"></div>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <div class="main-wrapper">
+      
+      <!-- TOP NAVBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" class="btn-icon-toggle" id="sidebarToggleBtn" onclick="window.ui.toggleSidebar()" aria-label="Toggle Navigation">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+          
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="globalSearchInput" placeholder="Search documents, salary slips, policy letters..." oninput="window.ui.handleGlobalSearch(this.value)">
+            <div id="globalSearchResults" class="search-dropdown hidden"></div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Role Fast Switcher Tool for testing & demonstration -->
+          <div class="role-switch-pill" title="Quickly switch view between Employee and HR Admin">
+            <span class="role-pill-label"><i class="fa-solid fa-repeat"></i> Switch:</span>
+            <button type="button" class="role-pill-btn" id="topbarSwitchBtn" onclick="window.auth.switchRoleQuick()">
+              <span id="switchRoleText">HR Admin</span>
+            </button>
+          </div>
+
+          <!-- Notification Dropdown -->
+          <div class="dropdown notification-dropdown">
+            <button type="button" class="btn-icon-topbar" id="notifBtn" onclick="window.ui.toggleNotifications(event)" aria-label="Notifications">
+              <i class="fa-regular fa-bell"></i>
+              <span class="notif-badge" id="unreadNotifCount">3</span>
+            </button>
+            <div id="notifMenu" class="dropdown-menu notif-menu hidden">
+              <div class="notif-header">
+                <h6>Notifications</h6>
+                <button type="button" class="btn-text-xs" onclick="window.ui.markAllNotificationsRead()">Mark all read</button>
+              </div>
+              <div class="notif-list" id="notifListContainer">
+                <!-- Injected by script.js -->
+              </div>
+              <div class="notif-footer">
+                <a href="#announcements" onclick="window.ui.navigate('announcements', event)">View company announcements</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile User Dropdown -->
+          <div class="dropdown user-dropdown">
+            <button type="button" class="topbar-user-btn" id="userMenuBtn" onclick="window.ui.toggleUserMenu(event)">
+              <img src="" alt="User" id="topbarUserAvatar" class="topbar-avatar">
+              <div class="topbar-user-names">
+                <span class="topbar-name" id="topbarUserName">Rahul Sharma</span>
+                <span class="topbar-role" id="topbarUserRole">Employee</span>
+              </div>
+              <i class="fa-solid fa-chevron-down caret-icon"></i>
+            </button>
+            <div id="userDropdownMenu" class="dropdown-menu user-menu hidden">
+              <div class="user-dropdown-header">
+                <strong id="dropdownFullName">Rahul Sharma</strong>
+                <span id="dropdownEmail">rahul.sharma@sonalservices.com</span>
+                <span class="badge-role-sm" id="dropdownRoleTag">Employee</span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a href="#profile" class="dropdown-item" onclick="window.ui.navigate('employee-profile', event)">
+                <i class="fa-regular fa-user"></i> My Profile
+              </a>
+              <a href="#documents" class="dropdown-item" onclick="window.ui.navigate('employee-documents', event)">
+                <i class="fa-regular fa-folder"></i> My Documents
+              </a>
+              <a href="#settings" class="dropdown-item" onclick="window.ui.navigate('settings', event)">
+                <i class="fa-solid fa-gear"></i> Account Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <button type="button" class="dropdown-item text-danger" onclick="window.auth.handleLogout()">
+                <i class="fa-solid fa-power-off"></i> Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN SCROLLABLE CONTENT VIEW AREA -->
+      <main class="page-content" id="pageContent">
+
+        <!-- ===================================================================
+             VIEW 1: EMPLOYEE DASHBOARD
+             =================================================================== -->
+        <section id="view-employee-dashboard" class="view-section">
+          <!-- Welcome Banner -->
+          <div class="welcome-banner">
+            <div class="welcome-text">
+              <span class="welcome-date" id="welcomeDateBadge"><i class="fa-regular fa-calendar"></i> Monday, 27 October 2026</span>
+              <h1 id="welcomeGreeting">Welcome back, Rahul! 👋</h1>
+              <p>Here is your employment summary, recent salary updates, and pending official document statuses.</p>
+            </div>
+            <div class="welcome-actions">
+              <button type="button" class="btn-banner-action" onclick="window.ui.navigate('employee-salary', event)">
+                <i class="fa-solid fa-download"></i> Latest Salary Slip
+              </button>
+              <button type="button" class="btn-banner-action outline" onclick="window.ui.navigate('employee-documents', event)">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Document
+              </button>
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards (4 Cards) -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon bg-blue-subtle text-blue">
+                <i class="fa-solid fa-folder-closed"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Total Documents</span>
+                <h3 class="metric-value" id="empStatTotalDocs">8</h3>
+                <span class="metric-sub text-success"><i class="fa-solid fa-circle-check"></i> 6 Verified by HR</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-green-subtle text-green">
+                <i class="fa-solid fa-receipt"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Available Salary Slips</span>
+                <h3 class="metric-value" id="empStatSalarySlips">12</h3>
+                <span class="metric-sub text-muted">Latest: Sep 2026</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-purple-subtle text-purple">
+                <i class="fa-solid fa-file-signature"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Official Letters</span>
+                <h3 class="metric-value" id="empStatOfficialLetters">2</h3>
+                <span class="metric-sub text-info">Appointment & Increment</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-amber-subtle text-amber">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Pending Documents</span>
+                <h3 class="metric-value" id="empStatPendingDocs">2</h3>
+                <span class="metric-sub text-warning"><i class="fa-solid fa-triangle-exclamation"></i> Action required</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Access Section -->
+          <div class="section-card quick-access-card">
+            <div class="section-card-header">
+              <div>
+                <h3>Quick Access Portals</h3>
+                <p>Instant shortcuts to your verified employment files</p>
+              </div>
+            </div>
+            <div class="quick-access-grid">
+              <div class="qa-item" onclick="window.ui.navigate('employee-profile', event)">
+                <div class="qa-icon"><i class="fa-solid fa-user-gear"></i></div>
+                <div class="qa-details">
+                  <h4>My Profile</h4>
+                  <span>View & update personal info</span>
+                </div>
+                <i class="fa-solid fa-chevron-right qa-arrow"></i>
+              </div>
+
+              <div class="qa-item" onclick="window.ui.navigate('employee-appointment', event)">
+                <div class="qa-icon text-indigo"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="qa-details">
+                  <h4>Appointment Letter</h4>
+                  <span>Official signed joining terms</span>
+                </div>
+                <i class="fa-solid fa-chevron-right qa-arrow"></i>
+              </div>
+
+              <div class="qa-item" onclick="window.ui.navigate('employee-salary', event)">
+                <div class="qa-icon text-emerald"><i class="fa-solid fa-money-check-dollar"></i></div>
+                <div class="qa-details">
+                  <h4>Monthly Salary Slips</h4>
+                  <span>Monthly statements & tax sheets</span>
+                </div>
+                <i class="fa-solid fa-chevron-right qa-arrow"></i>
+              </div>
+
+              <div class="qa-item" onclick="window.ui.navigate('employee-documents', event)">
+                <div class="qa-icon text-sky"><i class="fa-solid fa-id-card-clip"></i></div>
+                <div class="qa-details">
+                  <h4>Personal Documents</h4>
+                  <span>Aadhaar, PAN, Bank & Degrees</span>
+                </div>
+                <i class="fa-solid fa-chevron-right qa-arrow"></i>
+              </div>
+
+              <div class="qa-item" onclick="window.ui.navigate('employee-increment', event)">
+                <div class="qa-icon text-amber"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <div class="qa-details">
+                  <h4>Increment Letter</h4>
+                  <span>Annual appraisal revisions</span>
+                </div>
+                <i class="fa-solid fa-chevron-right qa-arrow"></i>
+              </div>
+
+              <div class="qa-item" onclick="window.ui.navigate('employee-experience', event)">
+                <div class="qa-icon text-purple"><i class="fa-solid fa-award"></i></div>
+                <div class="qa-details">
+                  <h4>Experience Letter</h4>
+                  <span>Relieving & service records</span>
+                </div>
+                <i class="fa-solid fa-chevron-right qa-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grid: Employment Summary Details + HR Announcements -->
+          <div class="dashboard-split-grid">
+            
+            <!-- Left: Employment Details Overview -->
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>Employment Details</h3>
+                  <p>Current organizational assignment at Sonal Services</p>
+                </div>
+                <span class="badge-status badge-active" id="dashEmpStatusBadge">Active</span>
+              </div>
+              
+              <div class="info-list-grid">
+                <div class="info-cell">
+                  <span class="info-label">Employee ID</span>
+                  <strong class="info-val" id="dashEmpId">EMP-1042</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Department</span>
+                  <strong class="info-val" id="dashEmpDept">Engineering & IT</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Designation</span>
+                  <strong class="info-val" id="dashEmpDesignation">Senior Full Stack Developer</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Date of Joining</span>
+                  <strong class="info-val" id="dashEmpDoj">15 Jan 2023</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Reporting Manager</span>
+                  <strong class="info-val" id="dashEmpManager">Vikram Malhotra (VP Technology)</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Work Location</span>
+                  <strong class="info-val" id="dashEmpLocation">Pune HQ (Hybrid)</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Employment Type</span>
+                  <strong class="info-val" id="dashEmpType">Full-Time Permanent</strong>
+                </div>
+                <div class="info-cell">
+                  <span class="info-label">Monthly Gross CTC</span>
+                  <strong class="info-val text-primary" id="dashEmpGross">₹ 85,000 / mo</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Latest HR Announcements -->
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>HR Announcements</h3>
+                  <p>Official notices and policy alerts</p>
+                </div>
+                <a href="#announcements" class="link-sm" onclick="window.ui.navigate('announcements', event)">View All</a>
+              </div>
+              <div class="announcements-mini-list" id="dashMiniAnnouncements">
+                <!-- Injected via script -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom: Recent Document Uploads & Activity Timeline -->
+          <div class="dashboard-split-grid mt-4">
+            <!-- Recent Document Uploads -->
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>Recent Document Uploads</h3>
+                  <p>Last 5 submitted documents and their current state</p>
+                </div>
+                <button type="button" class="btn-outline-sm" onclick="window.ui.navigate('employee-documents', event)">View All</button>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Document</th>
+                      <th>Category</th>
+                      <th>Uploaded On</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashRecentDocsTableBody">
+                    <!-- Injected dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Activity Timeline -->
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>Activity Timeline</h3>
+                  <p>Recent audit log and portal events</p>
+                </div>
+              </div>
+              <div class="activity-timeline" id="dashActivityTimeline">
+                <!-- Injected dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ===================================================================
+             VIEW 2: EMPLOYEE PROFILE & INFORMATION FORM
+             =================================================================== -->
+        <section id="view-employee-profile" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Employee Profile & Information</h2>
+              <p>View corporate employment records and update permitted personal details</p>
+            </div>
+            <div class="page-actions">
+              <span class="badge-pill bg-light text-muted"><i class="fa-solid fa-shield-halved"></i> Sensitive Employment Fields are HR-Protected</span>
+            </div>
+          </div>
+
+          <!-- Profile Top Header Card -->
+          <div class="profile-header-card">
+            <div class="profile-avatar-area">
+              <img src="" alt="Profile Photo" id="profHeaderAvatar" class="profile-banner-avatar">
+              <label for="profilePhotoInput" class="btn-avatar-edit" title="Upload new profile photo">
+                <i class="fa-solid fa-camera"></i>
+                <input type="file" id="profilePhotoInput" accept="image/*" class="hidden" onchange="window.profile.handleAvatarUpload(event)">
+              </label>
+            </div>
+            <div class="profile-header-details">
+              <div class="profile-name-row">
+                <h2 id="profHeaderName">Rahul Sharma</h2>
+                <span class="badge-status badge-active" id="profHeaderStatus">Active Employee</span>
+              </div>
+              <p class="prof-designation" id="profHeaderDesignation">Senior Full Stack Developer &bull; Engineering & IT</p>
+              <div class="prof-meta-tags">
+                <span><i class="fa-solid fa-id-badge"></i> <span id="profHeaderId">EMP-1042</span></span>
+                <span><i class="fa-solid fa-envelope"></i> <span id="profHeaderEmail">rahul.sharma@sonalservices.com</span></span>
+                <span><i class="fa-solid fa-phone"></i> <span id="profHeaderPhone">+91 98765 43210</span></span>
+                <span><i class="fa-solid fa-location-dot"></i> <span id="profHeaderLocation">Pune, Maharashtra</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Form Sections -->
+          <form id="profileForm" onsubmit="window.profile.saveProfile(event)">
+            
+            <!-- SECTION A: Personal Information (Editable by Employee) -->
+            <div class="section-card form-section-card">
+              <div class="form-section-header">
+                <div class="sec-title">
+                  <div class="sec-icon"><i class="fa-solid fa-user"></i></div>
+                  <div>
+                    <h3>Personal Information</h3>
+                    <p>Details editable by employee. Please maintain current contact info.</p>
+                  </div>
+                </div>
+                <span class="badge-status badge-verified"><i class="fa-solid fa-pen-to-square"></i> Editable</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="pFullName">Full Name <span class="req">*</span></label>
+                  <input type="text" id="pFullName" required>
+                </div>
+                <div class="form-group">
+                  <label for="pDob">Date of Birth <span class="req">*</span></label>
+                  <input type="date" id="pDob" required>
+                </div>
+                <div class="form-group">
+                  <label for="pGender">Gender <span class="req">*</span></label>
+                  <select id="pGender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-Binary">Non-Binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="pPhone">Mobile Number <span class="req">*</span></label>
+                  <input type="tel" id="pPhone" placeholder="+91 98765 43210" required>
+                </div>
+                <div class="form-group">
+                  <label for="pEmail">Personal / Corporate Email <span class="req">*</span></label>
+                  <input type="email" id="pEmail" required>
+                </div>
+                <div class="form-group">
+                  <label for="pEmergencyContactName">Emergency Contact Person <span class="req">*</span></label>
+                  <input type="text" id="pEmergencyContactName" placeholder="Spouse / Parent / Sibling name" required>
+                </div>
+                <div class="form-group">
+                  <label for="pEmergencyContactPhone">Emergency Contact Number <span class="req">*</span></label>
+                  <input type="tel" id="pEmergencyContactPhone" placeholder="+91 98765 00000" required>
+                </div>
+                <div class="form-group">
+                  <label for="pEmergencyRelation">Relationship with Emergency Contact</label>
+                  <input type="text" id="pEmergencyRelation" placeholder="e.g. Spouse, Father, Mother">
+                </div>
+                <div class="form-group full-width">
+                  <label for="pCurrentAddress">Current Residential Address <span class="req">*</span></label>
+                  <textarea id="pCurrentAddress" rows="2" placeholder="Flat No, Building, Street, City, State, PIN" required></textarea>
+                </div>
+                <div class="form-group full-width">
+                  <label for="pPermanentAddress">Permanent Residential Address <span class="req">*</span></label>
+                  <textarea id="pPermanentAddress" rows="2" placeholder="Permanent hometown address" required></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION B: Employment Information (Locked for Employee, Editable by HR) -->
+            <div class="section-card form-section-card">
+              <div class="form-section-header">
+                <div class="sec-title">
+                  <div class="sec-icon text-indigo"><i class="fa-solid fa-briefcase"></i></div>
+                  <div>
+                    <h3>Employment Information</h3>
+                    <p>Corporate records managed directly by Sonal Services HR Department.</p>
+                  </div>
+                </div>
+                <span class="badge-status badge-rejected" id="empInfoLockBadge"><i class="fa-solid fa-lock"></i> HR Restricted</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="pEmpId">Employee ID</label>
+                  <input type="text" id="pEmpId" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pDepartment">Department</label>
+                  <input type="text" id="pDepartment" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pDesignation">Designation</label>
+                  <input type="text" id="pDesignation" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pDoj">Date of Joining</label>
+                  <input type="date" id="pDoj" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pEmploymentType">Employment Type</label>
+                  <input type="text" id="pEmploymentType" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pManager">Reporting Manager</label>
+                  <input type="text" id="pManager" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pLocation">Work Location</label>
+                  <input type="text" id="pLocation" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pStatus">Employment Status</label>
+                  <input type="text" id="pStatus" readonly class="input-readonly">
+                </div>
+                <div class="form-group">
+                  <label for="pSalary">Current Monthly Salary (Gross CTC)</label>
+                  <input type="text" id="pSalary" readonly class="input-readonly font-mono font-bold text-primary">
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION C: Bank & Payout Details -->
+            <div class="section-card form-section-card">
+              <div class="form-section-header">
+                <div class="sec-title">
+                  <div class="sec-icon text-emerald"><i class="fa-solid fa-building-columns"></i></div>
+                  <div>
+                    <h3>Salary Account & Bank Details</h3>
+                    <p>Salary disbursement account details registered with payroll.</p>
+                  </div>
+                </div>
+                <span class="badge-status badge-verified"><i class="fa-solid fa-shield-halved"></i> KYC Linked</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="pBankHolder">Account Holder Name <span class="req">*</span></label>
+                  <input type="text" id="pBankHolder" required>
+                </div>
+                <div class="form-group">
+                  <label for="pBankName">Bank Name <span class="req">*</span></label>
+                  <input type="text" id="pBankName" required placeholder="HDFC Bank, ICICI Bank, SBI etc.">
+                </div>
+                <div class="form-group">
+                  <label for="pAccountNo">Account Number <span class="req">*</span></label>
+                  <input type="text" id="pAccountNo" required placeholder="XXXX XXXX XXXX">
+                </div>
+                <div class="form-group">
+                  <label for="pIfsc">IFSC Code <span class="req">*</span></label>
+                  <input type="text" id="pIfsc" required placeholder="e.g. HDFC0001234" class="font-mono uppercase">
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION D: Identity Document Previews -->
+            <div class="section-card form-section-card">
+              <div class="form-section-header">
+                <div class="sec-title">
+                  <div class="sec-icon text-sky"><i class="fa-solid fa-address-card"></i></div>
+                  <div>
+                    <h3>Identity & Compliance Documents Overview</h3>
+                    <p>Statutory identity numbers and submission compliance.</p>
+                  </div>
+                </div>
+                <button type="button" class="btn-outline-sm" onclick="window.ui.navigate('employee-documents', event)">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Manage Files
+                </button>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="pAadhaarNo">Aadhaar Number (Masked)</label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input type="text" id="pAadhaarNo" readonly class="input-readonly font-mono" value="XXXX-XXXX-5892">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pPanNo">PAN Card Number</label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-receipt"></i>
+                    <input type="text" id="pPanNo" readonly class="input-readonly font-mono uppercase" value="ABCDE1234F">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pPassportNo">Passport Number (Optional)</label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-passport"></i>
+                    <input type="text" id="pPassportNo" placeholder="Z1234567" class="font-mono uppercase">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Action Footer -->
+            <div class="form-actions-bar">
+              <button type="button" class="btn-secondary" onclick="window.profile.resetProfileForm()">Discard Changes</button>
+              <button type="submit" class="btn-primary" id="btnSaveProfile">
+                <i class="fa-solid fa-floppy-disk"></i> Save & Update Profile
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 3: APPOINTMENT LETTER SECTION (EMPLOYEE)
+             =================================================================== -->
+        <section id="view-employee-appointment" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Appointment Letter</h2>
+              <p>Official employment agreement and terms of engagement with Sonal Services</p>
+            </div>
+            <div class="page-actions" id="adminApptLetterActionPlaceholder">
+              <!-- Admin upload button injected here if logged in as Admin -->
+            </div>
+          </div>
+
+          <!-- Appointment Letter Card -->
+          <div class="section-card" id="appointmentLetterContainer">
+            <!-- Injected via script.js (active state or empty state) -->
+          </div>
+
+          <!-- Document Replacement & Revision History -->
+          <div class="section-card mt-4">
+            <div class="section-card-header">
+              <div>
+                <h3>Document Revision History</h3>
+                <p>Official records of appointment versions and amendments</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Version</th>
+                    <th>Document Reference</th>
+                    <th>Issued Date</th>
+                    <th>Issued By</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="appointmentHistoryTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 4: MONTHLY SALARY SLIPS (EMPLOYEE)
+             =================================================================== -->
+        <section id="view-employee-salary" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Monthly Salary Slips</h2>
+              <p>View, review, and download your verified monthly pay statements and tax withholdings</p>
+            </div>
+            <div class="page-actions" id="adminSalaryUploadBtnPlaceholder">
+              <!-- Injected if Admin -->
+            </div>
+          </div>
+
+          <!-- Filters Row -->
+          <div class="filters-card">
+            <div class="filters-left">
+              <div class="filter-item">
+                <label for="salaryFilterYear"><i class="fa-regular fa-calendar"></i> Financial Year</label>
+                <select id="salaryFilterYear" onchange="window.salary.filterSlips()">
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="all">All Years</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label for="salaryFilterMonth"><i class="fa-solid fa-filter"></i> Month</label>
+                <select id="salaryFilterMonth" onchange="window.salary.filterSlips()">
+                  <option value="all">All Months</option>
+                  <option value="09">September</option>
+                  <option value="08">August</option>
+                  <option value="07">July</option>
+                  <option value="06">June</option>
+                  <option value="05">May</option>
+                  <option value="04">April</option>
+                  <option value="03">March</option>
+                  <option value="02">February</option>
+                  <option value="01">January</option>
+                </select>
+              </div>
+            </div>
+            <div class="filters-right">
+              <div class="salary-stat-pill">
+                <span>YTD Net Received:</span>
+                <strong id="salaryYtdNet">₹ 7,12,800</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Salary Slips Table Card -->
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Month & Year</th>
+                    <th>Pay Period</th>
+                    <th>Basic Salary (₹)</th>
+                    <th>Allowances (₹)</th>
+                    <th>Deductions (₹)</th>
+                    <th>Net Salary (₹)</th>
+                    <th>Payment Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="salarySlipsTableBody">
+                  <!-- Injected via script.js -->
+                </tbody>
+              </table>
+            </div>
+            <!-- Empty state placeholder if no slips -->
+            <div id="salaryEmptyState" class="empty-state hidden">
+              <div class="empty-icon"><i class="fa-solid fa-receipt"></i></div>
+              <h3>No Salary Slips Found</h3>
+              <p>There are no pay statements matching your selected year and month filter.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 5: PERSONAL DOCUMENTS SECTION (EMPLOYEE)
+             =================================================================== -->
+        <section id="view-employee-documents" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Personal & Identity Documents Vault</h2>
+              <p>Upload and manage Aadhaar, PAN, educational degrees, and employment proofs</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-primary" onclick="window.docs.openUploadModal()">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload New Document
+              </button>
+            </div>
+          </div>
+
+          <!-- Document Verification Progress Card -->
+          <div class="section-card doc-progress-card">
+            <div class="doc-progress-info">
+              <div>
+                <h3>Mandatory Document Verification Progress</h3>
+                <p>Complete all required uploads to keep your HR compliance in full good standing.</p>
+              </div>
+              <div class="progress-percent-badge" id="docCompletionBadge">75% Complete</div>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="docProgressBar" style="width: 75%;"></div>
+            </div>
+            <div class="doc-checklist-summary" id="docChecklistSummary">
+              <!-- Checklist tags injected via script -->
+            </div>
+          </div>
+
+          <!-- Category Filter Tabs -->
+          <div class="tab-pill-group" id="docCategoryTabs">
+            <button type="button" class="tab-pill active" onclick="window.docs.filterCategory('all', this)">All Documents (<span id="countAllDocs">8</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.docs.filterCategory('Identity', this)">Identity & Government (<span id="countIdDocs">3</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.docs.filterCategory('Education', this)">Educational Certificates (<span id="countEduDocs">2</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.docs.filterCategory('Financial', this)">Bank & Financial (<span id="countFinDocs">1</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.docs.filterCategory('Previous Employment', this)">Past Employment (<span id="countPrevDocs">2</span>)</button>
+          </div>
+
+          <!-- Documents Grid -->
+          <div class="docs-cards-grid" id="docsGridContainer">
+            <!-- Injected via script.js -->
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 6: INCREMENT LETTER SECTION (EMPLOYEE)
+             =================================================================== -->
+        <section id="view-employee-increment" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Increment & Appraisal Letters</h2>
+              <p>Official records of your annual performance revisions, salary enhancements, and promotions</p>
+            </div>
+            <div class="page-actions" id="adminIncrementBtnPlaceholder">
+              <!-- Injected if Admin -->
+            </div>
+          </div>
+
+          <!-- Active Increment Letter Card -->
+          <div class="section-card" id="incrementLetterContainer">
+            <!-- Injected via script.js -->
+          </div>
+
+          <!-- Increment History Log -->
+          <div class="section-card mt-4">
+            <div class="section-card-header">
+              <div>
+                <h3>Appraisal & Increment History</h3>
+                <p>Historical track of salary revisions at Sonal Services</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Effective Date</th>
+                    <th>Designation</th>
+                    <th>Previous Salary (₹)</th>
+                    <th>Revised Salary (₹)</th>
+                    <th>Increment %</th>
+                    <th>Performance Rating</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="incrementHistoryTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 7: EXPERIENCE LETTER SECTION (EMPLOYEE)
+             =================================================================== -->
+        <section id="view-employee-experience" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Experience & Relieving Letter</h2>
+              <p>Official certificates of service, conduct, and professional tenure</p>
+            </div>
+            <div class="page-actions" id="adminExperienceBtnPlaceholder">
+              <!-- Injected if Admin -->
+            </div>
+          </div>
+
+          <!-- Experience Letter Container -->
+          <div class="section-card" id="experienceLetterContainer">
+            <!-- Injected via script.js: either issued letter card or active employee notice -->
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 8: ANNOUNCEMENTS (SHARED)
+             =================================================================== -->
+        <section id="view-announcements" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Corporate Announcements & Notices</h2>
+              <p>Official communications, office policies, and HR updates from Sonal Services leadership</p>
+            </div>
+            <div class="page-actions" id="adminAnnouncementBtnPlaceholder">
+              <!-- Admin new announcement button injected -->
+            </div>
+          </div>
+
+          <div class="announcements-full-grid" id="announcementsListContainer">
+            <!-- Injected via script -->
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 9: ADMIN / HR DASHBOARD
+             =================================================================== -->
+        <section id="view-admin-dashboard" class="view-section hidden">
+          <!-- Admin Top Banner -->
+          <div class="welcome-banner admin-banner">
+            <div class="welcome-text">
+              <span class="welcome-date"><i class="fa-solid fa-user-shield"></i> Sonal Services HR Executive Console</span>
+              <h1>HR & Operations Command Center</h1>
+              <p>Real-time workforce monitoring, document verification queue, and automated letter generation.</p>
+            </div>
+            <div class="welcome-actions">
+              <button type="button" class="btn-banner-action" onclick="window.admin.openAddEmployeeModal()">
+                <i class="fa-solid fa-user-plus"></i> Add New Employee
+              </button>
+              <button type="button" class="btn-banner-action outline" onclick="window.ui.navigate('admin-verification', event)">
+                <i class="fa-solid fa-list-check"></i> Verification Queue
+              </button>
+            </div>
+          </div>
+
+          <!-- HR Key Performance Metrics (5 Cards) -->
+          <div class="metrics-grid admin-metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon bg-blue-subtle text-blue">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Total Employees</span>
+                <h3 class="metric-value" id="adminStatTotalEmp">48</h3>
+                <span class="metric-sub text-success"><i class="fa-solid fa-arrow-trend-up"></i> +4 this quarter</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-green-subtle text-green">
+                <i class="fa-solid fa-user-check"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Active Headcount</span>
+                <h3 class="metric-value" id="adminStatActiveEmp">46</h3>
+                <span class="metric-sub text-muted">2 on notice period</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-amber-subtle text-amber">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Pending Verification</span>
+                <h3 class="metric-value" id="adminStatPendingVerif">7</h3>
+                <span class="metric-sub text-warning"><i class="fa-solid fa-bell"></i> Requires HR approval</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-emerald-subtle text-emerald">
+                <i class="fa-solid fa-receipt"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Slips Uploaded (Sep)</span>
+                <h3 class="metric-value" id="adminStatSalarySlips">48/48</h3>
+                <span class="metric-sub text-success"><i class="fa-solid fa-check-double"></i> 100% Disbursed</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon bg-purple-subtle text-purple">
+                <i class="fa-solid fa-file-signature"></i>
+              </div>
+              <div class="metric-info">
+                <span class="metric-label">Letters Issued</span>
+                <h3 class="metric-value" id="adminStatLettersIssued">142</h3>
+                <span class="metric-sub text-info">Appointment, Appraisals</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recently Added Employees & Document Queue -->
+          <div class="dashboard-split-grid mt-4">
+            
+            <!-- Quick Employee Management -->
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>Recently Onboarded Employees</h3>
+                  <p>Latest talent joining Sonal Services</p>
+                </div>
+                <a href="#admin-employees" class="link-sm" onclick="window.ui.navigate('admin-employees', event)">View Directory &rarr;</a>
+              </div>
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Employee</th>
+                      <th>Department</th>
+                      <th>Joining Date</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminRecentEmployeesTable">
+                    <!-- Injected via script -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Urgent HR Action Queue -->
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>Urgent Verification Tasks</h3>
+                  <p>Documents waiting for HR review</p>
+                </div>
+                <a href="#admin-verification" class="link-sm" onclick="window.ui.navigate('admin-verification', event)">All Tasks</a>
+              </div>
+              <div class="admin-task-list" id="adminQuickTasksContainer">
+                <!-- Injected via script -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Admin Quick Action Launcher -->
+          <div class="section-card mt-4">
+            <div class="section-card-header">
+              <div>
+                <h3>HR Document & Payroll Operations</h3>
+                <p>Direct shortcuts to manage staff records and compliance</p>
+              </div>
+            </div>
+            <div class="admin-action-grid">
+              <button type="button" class="admin-act-box" onclick="window.admin.openAddEmployeeModal()">
+                <div class="act-icon"><i class="fa-solid fa-user-plus"></i></div>
+                <strong>Add New Employee</strong>
+                <span>Register employee & payroll</span>
+              </button>
+              <button type="button" class="admin-act-box" onclick="window.admin.openUploadAppointmentModal()">
+                <div class="act-icon text-indigo"><i class="fa-solid fa-file-contract"></i></div>
+                <strong>Issue Appointment Letter</strong>
+                <span>Upload & publish joining terms</span>
+              </button>
+              <button type="button" class="admin-act-box" onclick="window.admin.openUploadSalaryModal()">
+                <div class="act-icon text-emerald"><i class="fa-solid fa-receipt"></i></div>
+                <strong>Upload Monthly Salary Slip</strong>
+                <span>Publish monthly salary slip</span>
+              </button>
+              <button type="button" class="admin-act-box" onclick="window.admin.openIssueIncrementModal()">
+                <div class="act-icon text-amber"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                <strong>Issue Increment Letter</strong>
+                <span>Revise CTC & grant hike</span>
+              </button>
+              <button type="button" class="admin-act-box" onclick="window.admin.openIssueExperienceModal()">
+                <div class="act-icon text-purple"><i class="fa-solid fa-certificate"></i></div>
+                <strong>Generate Experience Letter</strong>
+                <span>Issue relieving certificate</span>
+              </button>
+              <button type="button" class="admin-act-box" onclick="window.admin.openNewAnnouncementModal()">
+                <div class="act-icon text-sky"><i class="fa-solid fa-bullhorn"></i></div>
+                <strong>Broadcast Announcement</strong>
+                <span>Publish company-wide notice</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 10: ADMIN EMPLOYEE MANAGEMENT DIRECTORY
+             =================================================================== -->
+        <section id="view-admin-employees" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Employee Directory & Management</h2>
+              <p>Manage employee records, update job assignments, manage status and issue corporate documents</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-primary" onclick="window.admin.openAddEmployeeModal()">
+                <i class="fa-solid fa-user-plus"></i> Add New Employee
+              </button>
+            </div>
+          </div>
+
+          <!-- Employee Directory Controls -->
+          <div class="filters-card">
+            <div class="filters-left">
+              <div class="search-box-embedded">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="adminEmpSearchInput" placeholder="Search by name, ID, email..." oninput="window.admin.filterEmployeeDirectory()">
+              </div>
+              <div class="filter-item">
+                <label for="adminDeptFilter">Department</label>
+                <select id="adminDeptFilter" onchange="window.admin.filterEmployeeDirectory()">
+                  <option value="all">All Departments</option>
+                  <option value="Engineering & IT">Engineering & IT</option>
+                  <option value="Human Resources">Human Resources</option>
+                  <option value="Finance & Accounts">Finance & Accounts</option>
+                  <option value="Sales & Marketing">Sales & Marketing</option>
+                  <option value="Operations">Operations</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label for="adminStatusFilter">Status</label>
+                <select id="adminStatusFilter" onchange="window.admin.filterEmployeeDirectory()">
+                  <option value="all">All Statuses</option>
+                  <option value="Active">Active</option>
+                  <option value="On Notice">On Notice</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="filters-right">
+              <span class="count-pill">Showing <strong id="adminFilteredCount">0</strong> Employees</span>
+            </div>
+          </div>
+
+          <!-- Employee Table -->
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Joining Date</th>
+                    <th>Employment Status</th>
+                    <th>Doc Completion</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminEmployeesTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 11: ADMIN DOCUMENT VERIFICATION QUEUE
+             =================================================================== -->
+        <section id="view-admin-verification" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Document Verification Queue</h2>
+              <p>Audit and approve submitted KYC, Aadhaar, PAN, and educational documents</p>
+            </div>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="tab-pill-group" id="adminVerifStatusTabs">
+            <button type="button" class="tab-pill active" onclick="window.admin.filterVerifQueue('Pending', this)">Pending Verification (<span id="verifPendingCount">0</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.admin.filterVerifQueue('Verified', this)">Approved / Verified (<span id="verifApprovedCount">0</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.admin.filterVerifQueue('Rejected', this)">Rejected (<span id="verifRejectedCount">0</span>)</button>
+            <button type="button" class="tab-pill" onclick="window.admin.filterVerifQueue('all', this)">All Documents</button>
+          </div>
+
+          <!-- Verification Queue Table -->
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Document Name</th>
+                    <th>Category</th>
+                    <th>Submitted On</th>
+                    <th>Status</th>
+                    <th>Verification Comments</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="adminVerifTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 12: ADMIN APPOINTMENT LETTERS MANAGEMENT
+             =================================================================== -->
+        <section id="view-admin-appointment" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Appointment Letters Management</h2>
+              <p>Generate, upload, replace, and audit appointment letters for Sonal Services staff</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-primary" onclick="window.admin.openUploadAppointmentModal()">
+                <i class="fa-solid fa-file-arrow-up"></i> Issue / Upload Appointment Letter
+              </button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Ref Number</th>
+                    <th>Issue Date</th>
+                    <th>Monthly Gross CTC</th>
+                    <th>Document Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminApptTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 13: ADMIN SALARY MANAGEMENT
+             =================================================================== -->
+        <section id="view-admin-salary" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Salary & Payroll Management</h2>
+              <p>Upload monthly salary slips, review disbursements, and generate individual pay statements</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-primary" onclick="window.admin.openUploadSalaryModal()">
+                <i class="fa-solid fa-file-circle-plus"></i> Upload Salary Slip
+              </button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Month & Year</th>
+                    <th>Basic (₹)</th>
+                    <th>Allowances (₹)</th>
+                    <th>Deductions (₹)</th>
+                    <th>Net Pay (₹)</th>
+                    <th>Upload Date</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminSalaryTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 14: ADMIN INCREMENT LETTERS
+             =================================================================== -->
+        <section id="view-admin-increment" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Increment Letters & Appraisal Management</h2>
+              <p>Grant salary hikes, revise employee compensation, and publish official increment letters</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-primary" onclick="window.admin.openIssueIncrementModal()">
+                <i class="fa-solid fa-money-bill-trend-up"></i> Issue New Increment
+              </button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Effective Date</th>
+                    <th>Previous CTC (₹)</th>
+                    <th>Revised CTC (₹)</th>
+                    <th>Hike %</th>
+                    <th>Ref No.</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminIncrementTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 15: ADMIN EXPERIENCE LETTERS
+             =================================================================== -->
+        <section id="view-admin-experience" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Experience Letters & Relieving Certificates</h2>
+              <p>Generate, preview, and issue verified experience letters for relieving or transitioned staff</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-primary" onclick="window.admin.openIssueExperienceModal()">
+                <i class="fa-solid fa-certificate"></i> Generate Experience Letter
+              </button>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Designation</th>
+                    <th>Joining Date</th>
+                    <th>Relieving Date</th>
+                    <th>Issue Date</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminExperienceTableBody">
+                  <!-- Injected via script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 16: ADMIN REPORTS & AUDIT LOGS
+             =================================================================== -->
+        <section id="view-admin-reports" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>HR Reports, Compliance & System Audit</h2>
+              <p>Real-time audit log of document access, KYC verifications, and salary publications</p>
+            </div>
+            <div class="page-actions">
+              <button type="button" class="btn-secondary" onclick="window.ui.showToast('Audit log exported to CSV', 'success')">
+                <i class="fa-solid fa-file-csv"></i> Export Audit Log
+              </button>
+            </div>
+          </div>
+
+          <div class="dashboard-split-grid">
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>Document Compliance Summary</h3>
+                  <p>Department-level compliance metrics</p>
+                </div>
+              </div>
+              <div class="compliance-bars">
+                <div class="comp-bar-item">
+                  <div class="comp-header">
+                    <span>Engineering & IT</span>
+                    <strong>94% Verified</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 94%;"></div></div>
+                </div>
+                <div class="comp-bar-item">
+                  <div class="comp-header">
+                    <span>Finance & Accounts</span>
+                    <strong>100% Verified</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill bg-success" style="width: 100%;"></div></div>
+                </div>
+                <div class="comp-bar-item">
+                  <div class="comp-header">
+                    <span>Sales & Marketing</span>
+                    <strong>82% Verified</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill bg-warning" style="width: 82%;"></div></div>
+                </div>
+                <div class="comp-bar-item">
+                  <div class="comp-header">
+                    <span>Human Resources</span>
+                    <strong>100% Verified</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill bg-success" style="width: 100%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-card">
+              <div class="section-card-header">
+                <div>
+                  <h3>System Security Audit Trail</h3>
+                  <p>Recent high-privilege activities</p>
+                </div>
+              </div>
+              <div class="activity-timeline" id="adminAuditTimeline">
+                <!-- Injected via script -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 17: SETTINGS & PREFERENCES
+             =================================================================== -->
+        <section id="view-settings" class="view-section hidden">
+          <div class="page-title-box">
+            <div>
+              <h2>Portal Settings & Preferences</h2>
+              <p>Configure notifications, security credentials, and portal theme preferences</p>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="form-section-header">
+              <div class="sec-title">
+                <div class="sec-icon"><i class="fa-solid fa-bell"></i></div>
+                <div>
+                  <h3>Email & Portal Notifications</h3>
+                  <p>Select which alerts you wish to receive</p>
+                </div>
+              </div>
+            </div>
+            <div class="settings-toggle-list">
+              <label class="setting-toggle-item">
+                <div>
+                  <strong>Salary Slip Alerts</strong>
+                  <p>Receive an email notification when your monthly salary slip is published.</p>
+                </div>
+                <input type="checkbox" checked class="toggle-switch">
+              </label>
+              <label class="setting-toggle-item">
+                <div>
+                  <strong>Document Verification Updates</strong>
+                  <p>Get notified when HR verifies or requests re-upload of your certificates.</p>
+                </div>
+                <input type="checkbox" checked class="toggle-switch">
+              </label>
+              <label class="setting-toggle-item">
+                <div>
+                  <strong>HR Announcements</strong>
+                  <p>Important updates regarding company holidays, appraisals, and events.</p>
+                </div>
+                <input type="checkbox" checked class="toggle-switch">
+              </label>
+            </div>
+          </div>
+
+          <div class="section-card mt-4">
+            <div class="form-section-header">
+              <div class="sec-title">
+                <div class="sec-icon text-indigo"><i class="fa-solid fa-lock"></i></div>
+                <div>
+                  <h3>Change Portal Password</h3>
+                  <p>Update your portal access key</p>
+                </div>
+              </div>
+            </div>
+            <form onsubmit="event.preventDefault(); window.ui.showToast('Password updated successfully', 'success');">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" placeholder="Enter current password" required>
+                </div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" placeholder="Minimum 8 characters" required>
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" placeholder="Re-enter new password" required>
+                </div>
+              </div>
+              <div class="form-actions-bar">
+                <button type="submit" class="btn-primary">Update Password</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- PORTAL FOOTER -->
+      <footer class="app-footer">
+        <div class="footer-left">
+          <span>&copy; 2026 Sonal Services Pvt. Ltd. &bull; Enterprise HRMS Portal</span>
+          <span class="footer-dot">&bull;</span>
+          <span>CIN: U72900MH2020PTC345678</span>
+        </div>
+        <div class="footer-right">
+          <span class="secure-tag"><i class="fa-solid fa-shield-halved"></i> 256-Bit SSL Encrypted</span>
+          <a href="#" onclick="event.preventDefault(); window.ui.showHelpModal();">Support & Helpdesk</a>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODALS SYSTEM (PREVIEW, UPLOAD, AND ISSUANCE)
+       ========================================================================= -->
+
+  <!-- 1. SALARY SLIP PREVIEW MODAL (PRINT-OPTIMIZED) -->
+  <div id="salarySlipModal" class="modal-backdrop hidden">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-emerald"><i class="fa-solid fa-receipt"></i></div>
+          <div>
+            <h3>Official Salary Statement</h3>
+            <span id="slipModalSubtitle">For the month of September 2026</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button type="button" class="btn-outline-sm" onclick="window.salary.printSalarySlip()">
+            <i class="fa-solid fa-print"></i> Print / Save as PDF
+          </button>
+          <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('salarySlipModal')">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="modal-body printable-slip-body" id="printableSalarySlipArea">
+        <!-- Rendered by script.js -->
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="window.ui.closeModal('salarySlipModal')">Close</button>
+        <button type="button" class="btn-primary" onclick="window.salary.printSalarySlip()">
+          <i class="fa-solid fa-download"></i> Download Payslip PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. OFFICIAL LETTER PREVIEW MODAL (APPOINTMENT, INCREMENT, EXPERIENCE) -->
+  <div id="letterPreviewModal" class="modal-backdrop hidden">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-indigo"><i class="fa-solid fa-file-contract"></i></div>
+          <div>
+            <h3 id="letterModalTitle">Official Corporate Letter</h3>
+            <span id="letterModalSubtitle">Sonal Services Pvt. Ltd. Official Communication</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button type="button" class="btn-outline-sm" onclick="window.ui.printCurrentLetter()">
+            <i class="fa-solid fa-print"></i> Print / Download PDF
+          </button>
+          <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('letterPreviewModal')">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body printable-letter-body" id="printableLetterArea">
+        <!-- Rendered by script.js with official corporate letterhead, stamps & signatory -->
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="window.ui.closeModal('letterPreviewModal')">Close</button>
+        <button type="button" class="btn-primary" onclick="window.ui.printCurrentLetter()">
+          <i class="fa-solid fa-download"></i> Download Official PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. EMPLOYEE DOCUMENT UPLOAD MODAL -->
+  <div id="docUploadModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-primary"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <div>
+            <h3>Upload Personal Document</h3>
+            <span>Submit identity or academic proofs for HR verification</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('docUploadModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="docUploadForm" onsubmit="window.docs.handleDocUploadSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="uploadDocCategory">Document Category <span class="req">*</span></label>
+            <select id="uploadDocCategory" required onchange="window.docs.handleCategoryChange(this.value)">
+              <option value="">Select Category...</option>
+              <option value="Identity">Identity Proof (Aadhaar / PAN / Passport)</option>
+              <option value="Education">Educational Certificate / Degree</option>
+              <option value="Financial">Bank Proof / Cancelled Cheque</option>
+              <option value="Previous Employment">Past Experience / Relieving Letter</option>
+              <option value="Photograph">Passport Size Photograph</option>
+              <option value="Other">Other Official Document</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="uploadDocName">Document Name / Title <span class="req">*</span></label>
+            <input type="text" id="uploadDocName" placeholder="e.g. Aadhaar Card Front & Back" required>
+          </div>
+
+          <div class="form-group">
+            <label for="uploadDocExpiry">Document Expiry Date (if applicable)</label>
+            <input type="date" id="uploadDocExpiry">
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div class="file-dropzone" id="fileDropzone" onclick="document.getElementById('actualFileInput').click()">
+            <input type="file" id="actualFileInput" class="hidden" accept=".pdf,.jpg,.jpeg,.png" onchange="window.docs.handleFileSelected(this.files[0])">
+            <div class="dropzone-content">
+              <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+              <p><strong>Click to browse</strong> or drag & drop file here</p>
+              <span>Supports PDF, JPG, PNG up to 10MB</span>
+            </div>
+            <div id="dropzoneFilePreview" class="dropzone-preview hidden">
+              <i class="fa-solid fa-file-pdf file-icon"></i>
+              <div class="file-preview-info">
+                <strong id="dropzoneFileName">my_document.pdf</strong>
+                <span id="dropzoneFileSize">1.4 MB</span>
+              </div>
+              <button type="button" class="btn-remove-file" onclick="window.docs.clearSelectedFile(event)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <span class="field-error" id="uploadFileError"></span>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('docUploadModal')">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSubmitDocUpload">
+            <i class="fa-solid fa-upload"></i> Submit for Verification
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. DOCUMENT PREVIEW MODAL (GENERIC FILE VIEWER) -->
+  <div id="docPreviewModal" class="modal-backdrop hidden">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-sky"><i class="fa-solid fa-file-lines"></i></div>
+          <div>
+            <h3 id="docPreviewTitle">Document Preview</h3>
+            <span id="docPreviewMeta">Uploaded on 12 Sep 2026 &bull; Verified</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('docPreviewModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body doc-preview-screen" id="docPreviewScreenContent">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="window.ui.closeModal('docPreviewModal')">Close</button>
+        <button type="button" class="btn-primary" id="btnDownloadPreviewedDoc" onclick="window.docs.downloadCurrentDoc()">
+          <i class="fa-solid fa-download"></i> Download Document
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ADMIN: VERIFY / REJECT DOCUMENT MODAL -->
+  <div id="adminVerifyDocModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-amber"><i class="fa-solid fa-clipboard-check"></i></div>
+          <div>
+            <h3>Audit & Verify Document</h3>
+            <span id="adminVerifDocSubtitle">Review submitted employee file</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminVerifyDocModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form onsubmit="window.admin.submitVerificationDecision(event)">
+        <div class="modal-body">
+          <div class="verif-summary-box" id="adminVerifSummaryBox">
+            <!-- Dynamic info -->
+          </div>
+          <div class="form-group mt-3">
+            <label>Decision <span class="req">*</span></label>
+            <div class="decision-radio-group">
+              <label class="radio-card">
+                <input type="radio" name="verifDecision" value="Verified" checked>
+                <div class="radio-content text-success">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <strong>Approve & Verify</strong>
+                  <span>Mark as authentic</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="verifDecision" value="Rejected">
+                <div class="radio-content text-danger">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                  <strong>Reject Document</strong>
+                  <span>Request re-upload</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <label for="adminVerifRemarks">HR Remarks / Reason <span class="req">*</span></label>
+            <textarea id="adminVerifRemarks" rows="3" placeholder="e.g. Verified with PAN database OR Aadhaar copy is blurred, please upload clear color scan." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminVerifyDocModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Submit Decision</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. ADMIN: ADD / EDIT EMPLOYEE MODAL -->
+  <div id="adminEmployeeModal" class="modal-backdrop hidden">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-primary"><i class="fa-solid fa-user-plus"></i></div>
+          <div>
+            <h3 id="adminEmpModalTitle">Add New Employee</h3>
+            <span>Register employee master record and initialize payroll</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminEmployeeModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="adminEmployeeForm" onsubmit="window.admin.saveEmployeeRecord(event)">
+        <div class="modal-body">
+          <input type="hidden" id="adminEditEmpIndex" value="-1">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="aeId">Employee ID <span class="req">*</span></label>
+              <input type="text" id="aeId" required placeholder="EMP-1048" class="font-mono uppercase">
+            </div>
+            <div class="form-group">
+              <label for="aeName">Full Name <span class="req">*</span></label>
+              <input type="text" id="aeName" required placeholder="e.g. Ananya Deshmukh">
+            </div>
+            <div class="form-group">
+              <label for="aeEmail">Corporate Email <span class="req">*</span></label>
+              <input type="email" id="aeEmail" required placeholder="ananya.d@sonalservices.com">
+            </div>
+            <div class="form-group">
+              <label for="aePhone">Contact Number <span class="req">*</span></label>
+              <input type="tel" id="aePhone" required placeholder="+91 98220 12345">
+            </div>
+            <div class="form-group">
+              <label for="aeDept">Department <span class="req">*</span></label>
+              <select id="aeDept" required>
+                <option value="Engineering & IT">Engineering & IT</option>
+                <option value="Human Resources">Human Resources</option>
+                <option value="Finance & Accounts">Finance & Accounts</option>
+                <option value="Sales & Marketing">Sales & Marketing</option>
+                <option value="Operations">Operations</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="aeDesignation">Designation <span class="req">*</span></label>
+              <input type="text" id="aeDesignation" required placeholder="e.g. UI/UX Designer">
+            </div>
+            <div class="form-group">
+              <label for="aeDoj">Date of Joining <span class="req">*</span></label>
+              <input type="date" id="aeDoj" required>
+            </div>
+            <div class="form-group">
+              <label for="aeStatus">Employment Status <span class="req">*</span></label>
+              <select id="aeStatus" required>
+                <option value="Active">Active</option>
+                <option value="On Notice">On Notice</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="aeGross">Monthly Gross CTC (₹) <span class="req">*</span></label>
+              <input type="number" id="aeGross" required placeholder="75000" min="10000" step="500">
+            </div>
+            <div class="form-group">
+              <label for="aeManager">Reporting Manager</label>
+              <input type="text" id="aeManager" placeholder="e.g. Vikram Malhotra">
+            </div>
+            <div class="form-group">
+              <label for="aeLocation">Work Location</label>
+              <input type="text" id="aeLocation" placeholder="Pune HQ" value="Pune HQ">
+            </div>
+            <div class="form-group">
+              <label for="aePassword">Initial Password</label>
+              <input type="text" id="aePassword" value="Sonal@2026" placeholder="Initial portal password">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminEmployeeModal')">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnAdminSaveEmp">Save Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. ADMIN: UPLOAD / ISSUE APPOINTMENT LETTER MODAL -->
+  <div id="adminAppointmentModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-indigo"><i class="fa-solid fa-file-signature"></i></div>
+          <div>
+            <h3>Issue Appointment Letter</h3>
+            <span>Generate or upload signed employment agreement</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminAppointmentModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="adminAppointmentForm" onsubmit="window.admin.saveAppointmentLetter(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="alEmpSelect">Select Employee <span class="req">*</span></label>
+            <select id="alEmpSelect" required onchange="window.admin.syncAppointmentEmpDetails(this.value)">
+              <!-- Injected by script -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="alRefNo">Reference Number <span class="req">*</span></label>
+            <input type="text" id="alRefNo" required value="SS/HR/AL/2026/1042" class="font-mono">
+          </div>
+          <div class="form-group">
+            <label for="alIssueDate">Date of Issuance <span class="req">*</span></label>
+            <input type="date" id="alIssueDate" required>
+          </div>
+          <div class="form-group">
+            <label for="alGross">Monthly CTC / Salary Agreed (₹) <span class="req">*</span></label>
+            <input type="number" id="alGross" required placeholder="85000">
+          </div>
+          <div class="form-group">
+            <label for="alTerms">Special Terms / Probation Period</label>
+            <input type="text" id="alTerms" value="6 Months Probation, 30 Days Notice Period">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminAppointmentModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Issue & Publish Letter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. ADMIN: UPLOAD SALARY SLIP MODAL -->
+  <div id="adminSalaryModal" class="modal-backdrop hidden">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-emerald"><i class="fa-solid fa-money-check-dollar"></i></div>
+          <div>
+            <h3>Generate & Upload Salary Slip</h3>
+            <span>Compute pay components and publish monthly statement</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminSalaryModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="adminSalaryForm" onsubmit="window.admin.saveSalarySlip(event)">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="asEmpSelect">Select Employee <span class="req">*</span></label>
+              <select id="asEmpSelect" required onchange="window.admin.syncSalaryCalculations(this.value)">
+                <!-- Dynamic employees -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="asMonth">Salary Month <span class="req">*</span></label>
+              <select id="asMonth" required>
+                <option value="October">October</option>
+                <option value="September" selected>September</option>
+                <option value="August">August</option>
+                <option value="July">July</option>
+                <option value="June">June</option>
+                <option value="May">May</option>
+                <option value="April">April</option>
+                <option value="March">March</option>
+                <option value="February">February</option>
+                <option value="January">January</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="asYear">Year <span class="req">*</span></label>
+              <input type="number" id="asYear" value="2026" required>
+            </div>
+            <div class="form-group">
+              <label for="asBasic">Basic Pay (₹) <span class="req">*</span></label>
+              <input type="number" id="asBasic" required oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asHra">HRA (₹) <span class="req">*</span></label>
+              <input type="number" id="asHra" required oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asSpecial">Special Allowance (₹)</label>
+              <input type="number" id="asSpecial" value="0" oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asConveyance">Conveyance Allowance (₹)</label>
+              <input type="number" id="asConveyance" value="1600" oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asPf">Provident Fund Deduction (₹)</label>
+              <input type="number" id="asPf" value="1800" oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asPt">Professional Tax (₹)</label>
+              <input type="number" id="asPt" value="200" oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asTds">TDS / Income Tax (₹)</label>
+              <input type="number" id="asTds" value="0" oninput="window.admin.recalculateNetPay()">
+            </div>
+            <div class="form-group">
+              <label for="asNetPay">Calculated Net Pay (₹)</label>
+              <input type="number" id="asNetPay" readonly class="input-readonly font-mono font-bold text-success">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminSalaryModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Publish Salary Slip</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 9. ADMIN: ISSUE INCREMENT LETTER MODAL -->
+  <div id="adminIncrementModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-amber"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+          <div>
+            <h3>Issue Increment Letter</h3>
+            <span>Grant salary revision and update employee compensation</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminIncrementModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="adminIncrementForm" onsubmit="window.admin.saveIncrementLetter(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="incEmpSelect">Select Employee <span class="req">*</span></label>
+            <select id="incEmpSelect" required onchange="window.admin.syncIncrementEmp(this.value)">
+              <!-- Dynamic -->
+            </select>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Current Monthly Salary (₹)</label>
+              <input type="text" id="incCurrentSalary" readonly class="input-readonly font-mono">
+            </div>
+            <div class="form-group">
+              <label for="incRevisedSalary">Revised Monthly Salary (₹) <span class="req">*</span></label>
+              <input type="number" id="incRevisedSalary" required placeholder="e.g. 95000" oninput="window.admin.calcIncrementMetrics()">
+            </div>
+            <div class="form-group">
+              <label>Increment Hike Amount (₹)</label>
+              <input type="text" id="incAmountDiff" readonly class="input-readonly font-mono text-success">
+            </div>
+            <div class="form-group">
+              <label>Hike Percentage (%)</label>
+              <input type="text" id="incPercentDiff" readonly class="input-readonly font-mono font-bold text-success">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="incEffectiveDate">Effective Date <span class="req">*</span></label>
+            <input type="date" id="incEffectiveDate" required>
+          </div>
+          <div class="form-group">
+            <label for="incRating">Performance Appraisal Rating</label>
+            <select id="incRating">
+              <option value="Outstanding (Exceeds Expectations)">Outstanding (Exceeds Expectations)</option>
+              <option value="Very Good (Consistently Meets High Bar)">Very Good (Consistently Meets High Bar)</option>
+              <option value="Good (Meets Expectations)">Good (Meets Expectations)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="incRemarks">Remarks / Promotion Note</label>
+            <textarea id="incRemarks" rows="2" placeholder="e.g. Promoted to Senior Full Stack Lead in recognition of exceptional leadership and platform uptime."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminIncrementModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Generate & Issue Letter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10. ADMIN: ISSUE EXPERIENCE LETTER MODAL -->
+  <div id="adminExperienceModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-purple"><i class="fa-solid fa-certificate"></i></div>
+          <div>
+            <h3>Generate Experience & Relieving Certificate</h3>
+            <span>Issue verified service certificate for alumni or relieving staff</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminExperienceModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="adminExperienceForm" onsubmit="window.admin.saveExperienceLetter(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="expEmpSelect">Select Employee <span class="req">*</span></label>
+            <select id="expEmpSelect" required onchange="window.admin.syncExperienceEmp(this.value)">
+              <!-- Dynamic -->
+            </select>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="expDoj">Date of Joining</label>
+              <input type="date" id="expDoj" required>
+            </div>
+            <div class="form-group">
+              <label for="expLastDate">Last Working Date <span class="req">*</span></label>
+              <input type="date" id="expLastDate" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="expDesignation">Final Designation Held <span class="req">*</span></label>
+            <input type="text" id="expDesignation" required placeholder="Senior Developer">
+          </div>
+          <div class="form-group">
+            <label for="expRemarks">Conduct & Performance Remarks</label>
+            <textarea id="expRemarks" rows="3" placeholder="During their tenure, we found them to be sincere, diligent, and professionally competent. We wish them all success in future endeavors."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminExperienceModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Generate Official Letter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 11. ADMIN: NEW ANNOUNCEMENT MODAL -->
+  <div id="adminAnnouncementModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-sky"><i class="fa-solid fa-bullhorn"></i></div>
+          <div>
+            <h3>Broadcast HR Announcement</h3>
+            <span>Publish official company news to all employees</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('adminAnnouncementModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form onsubmit="window.admin.saveAnnouncement(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="annTitle">Announcement Title <span class="req">*</span></label>
+            <input type="text" id="annTitle" placeholder="e.g. Diwali Holiday Schedule & Bonus Payouts" required>
+          </div>
+          <div class="form-group">
+            <label for="annCategory">Category</label>
+            <select id="annCategory">
+              <option value="Policy">Policy Update</option>
+              <option value="Holiday">Holiday & Leaves</option>
+              <option value="Appraisal">Appraisal Cycle</option>
+              <option value="Event">Company Event</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="annContent">Announcement Details <span class="req">*</span></label>
+            <textarea id="annContent" rows="4" placeholder="Full details of the announcement..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('adminAnnouncementModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Publish Announcement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 12. FORGOT PASSWORD MODAL -->
+  <div id="forgotPasswordModal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon text-primary"><i class="fa-solid fa-key"></i></div>
+          <div>
+            <h3>Reset Portal Access</h3>
+            <span>Enter your registered email address</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="window.ui.closeModal('forgotPasswordModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form onsubmit="window.auth.handleForgotSubmit(event)">
+        <div class="modal-body">
+          <p class="text-muted">A password reset verification link will be dispatched to your authorized work inbox.</p>
+          <div class="form-group mt-3">
+            <label for="forgotEmail">Corporate Email Address <span class="req">*</span></label>
+            <input type="email" id="forgotEmail" placeholder="your.name@sonalservices.com" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="window.ui.closeModal('forgotPasswordModal')">Cancel</button>
+          <button type="submit" class="btn-primary">Send Reset Link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 13. TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Core JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
+
